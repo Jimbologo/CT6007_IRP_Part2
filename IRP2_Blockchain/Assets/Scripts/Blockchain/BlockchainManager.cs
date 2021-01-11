@@ -8,7 +8,7 @@ public class BlockchainManager : MonoBehaviour
     //We can store the blockchain here too
     //We will also need to setup genesis Block here too
 
-    protected List<Block> blockchain = new List<Block>();
+    public List<Block> blockchain = new List<Block>();
 
     private void Awake()
     {
@@ -19,5 +19,12 @@ public class BlockchainManager : MonoBehaviour
         blockchain.Add(genesisBlock);
 
         
+    }
+
+    //Clears old chain and set it to new chain
+    public void UpdateBlockchain(List<Block> a_newBlockchain)
+    {
+        blockchain.Clear();
+        blockchain.AddRange(a_newBlockchain);
     }
 }

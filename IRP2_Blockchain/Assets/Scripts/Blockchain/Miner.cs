@@ -29,6 +29,7 @@ public class Miner : BlockchainManager
             blockchain.Add(a_blockToValidate);
 
             //TODO: SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
+            FindObjectOfType<User>().UpdateBlockchain(blockchain);
         }
         else
         {
@@ -42,34 +43,8 @@ public class Miner : BlockchainManager
         ValidateBlock(a_blockToAdd.GetTransactions(), a_blockToAdd);
     }
 
-    private void Start()
+    public void DebugBlockchain()
     {
-        Transaction[] transactions1 = new Transaction[]
-        {
-            new Transaction(0,0,"abc"),
-            new Transaction(0, 0, "abd"),
-            new Transaction(0, 0, "abe"),
-            new Transaction(0, 0, "abf"),
-            new Transaction(0, 0, "abg"),
-        };
-
-        Transaction[] transactions2 = new Transaction[]
-        {
-            new Transaction(0,0,"abb"),
-            new Transaction(0, 0, "abd"),
-            new Transaction(0, 0, "abe"),
-            new Transaction(0, 0, "abf"),
-            new Transaction(0, 0, "abg"),
-        };
-
-        Block testBlock1 = new Block(blockchain[0].GetCurrentBlockHash(), transactions1);
-        //Add block to the blockchain
-        AddToBlockchain(testBlock1);
-
-        Block testBlock2 = new Block(testBlock1.GetCurrentBlockHash(), transactions2);
-        //Add block to the blockchain
-        AddToBlockchain(testBlock2);
-
         Debug.Log("-----------------------------------------");
         Debug.Log("Genesis Block Data: ");
         Debug.Log("Genesis Block Previous Hash: " + System.Text.Encoding.Default.GetString(blockchain[0].GetPreviousBlockHash()));
