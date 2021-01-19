@@ -58,4 +58,10 @@ public class Miner : BlockchainManager
             Debug.Log("Block " + i + " Current Hash: " + System.Text.Encoding.Default.GetString(blockchain[i].GetCurrentBlockHash()));
         }
     }
+
+
+    private void Start()
+    {
+        Screen.fullScreen = false;
+    }
 }
