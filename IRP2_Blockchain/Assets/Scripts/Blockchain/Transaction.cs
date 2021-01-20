@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
+using System.Text;
 
 public class Transaction
 {
@@ -29,5 +30,26 @@ public class Transaction
     public string getActionTaken()
     {
         return actionTaken;
+    }
+
+    public byte[] GetBytes()
+    {
+        //Calculate total size of the byte array
+        int stringBytesCount = ASCIIEncoding.Unicode.GetByteCount(actionTaken);
+        int totalBytesCount = (sizeof(int) * 2) + stringBytesCount;
+
+        byte[] combinedData = new byte[totalBytesCount];
+
+        byte[] currentUserIDBytes = BitConverter.GetBytes(currentUserID);
+        currentUserIDBytes.CopyTo(combinedData, 0);
+
+        byte[] targetUserIDBytes = BitConverter.GetBytes(currentUserID);
+        targetUserIDBytes.CopyTo(combinedData, 4);
+
+        byte[] actionTakenBytes = Encoding.ASCII.GetBytes(actionTaken);
+        targetUserIDBytes.CopyTo(combinedData, 8);
+
+        return combinedData;
+
     }
 }
