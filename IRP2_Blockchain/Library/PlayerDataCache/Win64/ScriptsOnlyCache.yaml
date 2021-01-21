@@ -1,6 +1,8 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - BlockUI
+    - BlockchainDebugging
     - Miner
     - NET_HandleData
     - NET_NetworkManager
@@ -26,10 +28,14 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
+    - UnityEngine.UI.GridLayoutGroup
     - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
     - UnityEngine.UI.LayoutElement
+    - UnityEngine.UI.Mask
     - UnityEngine.UI.RectMask2D
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
@@ -49,6 +55,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -60,21 +68,29 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11812}
     - Class: 114
+      Script: {instanceID: 11932}
+    - Class: 114
       Script: {instanceID: 11950}
     - Class: 114
       Script: {instanceID: 11972}
     - Class: 114
       Script: {instanceID: 11996}
     - Class: 114
+      Script: {instanceID: 12036}
+    - Class: 114
       Script: {instanceID: 12108}
     - Class: 114
       Script: {instanceID: 12202}
+    - Class: 114
+      Script: {instanceID: 12308}
     - Class: 114
       Script: {instanceID: 12406}
     - Class: 114
       Script: {instanceID: 12438}
     - Class: 114
       Script: {instanceID: 12574}
+    - Class: 114
+      Script: {instanceID: 12634}
     - Class: 114
       Script: {instanceID: 12750}
     - Class: 114
@@ -97,6 +113,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13578}
     - Class: 114
       Script: {instanceID: 13792}
+    - Class: 114
+      Script: {instanceID: 16744}
+    - Class: 114
+      Script: {instanceID: 17160}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -113,6 +133,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 224
       Script: {instanceID: 0}
+    - Class: 258
+      Script: {instanceID: 0}
     - Class: 850595691
       Script: {instanceID: 0}
   scriptHashData:
@@ -124,7 +146,7 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
-      Hash: f0c7bb6f4f96895324eb19fa819847e6
+      Hash: 3e5b3edf5411b0190d90939c970b3801
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: User
@@ -166,7 +188,7 @@ ScriptsOnlyBuild:
     className: PlayerQuitHandler
   - hash:
       serializedVersion: 2
-      Hash: f0c7bb6f4f96895324eb19fa819847e6
+      Hash: 3e5b3edf5411b0190d90939c970b3801
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BlockchainManager
@@ -358,7 +380,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: f0c7bb6f4f96895324eb19fa819847e6
+      Hash: 3e5b3edf5411b0190d90939c970b3801
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Miner
@@ -578,6 +600,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 31583046d30aa5b7fc5ae7b8fc17108b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BlockchainDebugging
+  - hash:
+      serializedVersion: 2
+      Hash: ba231512ae645604b7ed5d4d40cb5ec3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BlockUI
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

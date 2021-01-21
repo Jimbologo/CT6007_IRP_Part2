@@ -16,7 +16,7 @@ public class NET_NetworkManager : MonoBehaviour
 
     private void Awake()
     {
-        Screen.SetResolution(400,400,false);
+        Screen.SetResolution(800,800,false);
     }
 
     public void SendNetMessage(string a_newMessage, int a_clientID)
@@ -65,18 +65,25 @@ public class NET_NetworkManager : MonoBehaviour
     {
         if (p2pClient && p2pClient.isActive())
         {
+            Debug.LogError("Sending blockchain data from Client");
             p2pClient.SendNetMessage(a_newMessage);
         }
         else if (p2pHost && p2pHost.isActive())
         {
             if(a_clientID == -1)
             {
+                Debug.LogError("Sending blockchain data to ALL from Host");
                 p2pHost.SendNetMessageToAll(a_newMessage);
             }
             else
             {
+                Debug.LogError("Sending blockchain data from Host");
                 p2pHost.SendNetMessage(a_clientID, a_newMessage);
             }
+        }
+        else
+        {
+            Debug.LogError("Host or Client was not found when sending message... are the in the scene?");
         }
     }
 
@@ -85,11 +92,13 @@ public class NET_NetworkManager : MonoBehaviour
         //Might need to forward this to all other connected clients
         if (p2pHost && p2pHost.isActive())
         {
+            Debug.LogError("Trying to send block data forward to ALL");
             p2pHost.SendNetMessageToAll(a_blockData);
         }
 
         if (miner.GetActive())
         {
+            Debug.LogError("sorting blockchain data out as miner...");
             miner.AddToBlockchain(a_blockData);
         }
         else if(!user.GetActive())
@@ -100,6 +109,8 @@ public class NET_NetworkManager : MonoBehaviour
 
     public void HandleBlockchainData(Blockchain a_blockchainData)
     {
+        Debug.LogError("Handling blockchain data!");
+
         //Might need to forward this to all other connected clients
         if (p2pHost && p2pHost.isActive())
         {
@@ -110,7 +121,7 @@ public class NET_NetworkManager : MonoBehaviour
         {
             user.UpdateBlockchain(a_blockchainData.theBlockchain);
         }
-        if (miner.GetActive())
+        else if (miner.GetActive())
         {
             miner.UpdateBlockchain(a_blockchainData.theBlockchain);
         }

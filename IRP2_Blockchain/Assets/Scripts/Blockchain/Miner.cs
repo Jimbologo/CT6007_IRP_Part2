@@ -39,13 +39,21 @@ public class Miner : BlockchainManager
             //SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
             Blockchain newBlockchain = new Blockchain();
             newBlockchain.theBlockchain = blockchain;
-
-            networkManager.SendNetMessage(newBlockchain, -1);
+            StartCoroutine(DelayedBlockchainUpdater(newBlockchain));
+            
         }
         else
         {
-            Debug.LogWarning("[FAILURE]: Block is NOT Valid");
+            Debug.LogError("[FAILURE]: Block is NOT Valid! Not updating Blockchain");
         }
+    }
+
+    //So that all client are ready to receieve the data we delay
+    private IEnumerator DelayedBlockchainUpdater(Blockchain a_blockchain)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        networkManager.SendNetMessage(a_blockchain, -1);
     }
 
     //This would normally be a message sent from a user not this function

@@ -10,7 +10,11 @@ public class BlockchainManager : MonoBehaviour
 
     public List<Block> blockchain = new List<Block>();
 
+    [SerializeField]
     private bool isActive = false;
+
+    [SerializeField]
+    private BlockchainDebugging blockchainDebugging;
 
     private void Awake()
     {
@@ -33,6 +37,9 @@ public class BlockchainManager : MonoBehaviour
     {
         blockchain.Clear();
         blockchain.AddRange(a_newBlockchain);
+
+        //Update the UI representing blockchain data
+        blockchainDebugging.UpdateBlockchainData(a_newBlockchain);
     }
 
     public void DebugBlockchain()

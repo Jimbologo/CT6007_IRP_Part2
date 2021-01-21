@@ -81,10 +81,10 @@ public class NET_P2PClient : MonoBehaviour
         stream.Write(byteMsg, 0, byteMsg.Length);
     }
 
-    public void SendNetMessage(Blockchain a_bmessage)
+    public void SendNetMessage(Blockchain a_bcmessage)
     {
         byte[] byteMsg = new byte[4096];
-        byteMsg = NET_HandleData.WriteData(a_bmessage);
+        byteMsg = NET_HandleData.WriteData(a_bcmessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
     }
