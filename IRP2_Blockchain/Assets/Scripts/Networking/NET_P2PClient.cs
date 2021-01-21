@@ -18,14 +18,15 @@ public class NET_P2PClient : MonoBehaviour
 
     private bool active = false;
 
+    NET_NetworkManager networkManager;
+
     private void Start()
     {
+        networkManager = FindObjectOfType<NET_NetworkManager>();
+
         active = true;
 
         InitaliseHost();
-
-        Thread streamReading = new Thread(new ThreadStart(RecieveData));
-        streamReading.Start();
     }
 
     public bool isActive()
@@ -44,36 +45,77 @@ public class NET_P2PClient : MonoBehaviour
 
         //connect TCP cLIENT
         tcpClient.Connect(ipAddress, port);
-        Debug.LogError("Connected");
+
+        if(tcpClient.Connected){
+            Debug.LogError("Connected");
+        }
 
         SendNetMessage("Handshake");
 
+        Thread streamReading = new Thread(new ThreadStart(RecieveData));
+        streamReading.Start();
     }
 
     public void SendNetMessage(string a_smessage)
     {
-        byte[] byteMsg = Encoding.ASCII.GetBytes(a_smessage);
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_smessage);
+        NetworkStream stream = tcpClient.GetStream();
+        stream.Write(byteMsg, 0, byteMsg.Length);
+    }
+
+    public void SendNetMessage(int a_imessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_imessage);
+        NetworkStream stream = tcpClient.GetStream();
+        stream.Write(byteMsg, 0, byteMsg.Length);
+    }
+
+    public void SendNetMessage(Block a_bmessage)
+    {
+        Debug.LogError("Going to send block message");
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bmessage);
+        NetworkStream stream = tcpClient.GetStream();
+        stream.Write(byteMsg, 0, byteMsg.Length);
+    }
+
+    public void SendNetMessage(Blockchain a_bmessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bmessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
     }
 
     private void RecieveData()
     {
-        byte[] byteArray = new byte[100];
+        byte[] byteArray = new byte[4096];
         while (tcpClient.Connected)
         {
             NetworkStream stream = tcpClient.GetStream();
 
-            if (stream != null && stream.Read(byteArray, 0, 100) > 0)
+            if (stream != null && stream.Read(byteArray, 0, 4096) > 0)
             {
                 HandleData(byteArray);
             }
         }
     }
 
-    private void HandleData(byte[] a_incomingMessage)
+    public void HandleData(byte[] a_incomingMessage)
     {
-        Debug.LogError("Server Sent a Message: " + System.Text.Encoding.Default.GetString(a_incomingMessage));
+        Debug.LogError("Host Sent data...");
+
+        //Null check networkmananger
+        if (!networkManager)
+        {
+            //find the component from scene before send to static method
+            Debug.LogError("Network Manager not found in scene, locating...");
+            networkManager = FindObjectOfType<NET_NetworkManager>();
+        }
+
+        NET_HandleData.ReadData(a_incomingMessage, networkManager);
     }
 
     private void CloseNet()

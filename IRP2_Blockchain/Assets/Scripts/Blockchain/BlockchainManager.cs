@@ -10,6 +10,8 @@ public class BlockchainManager : MonoBehaviour
 
     public List<Block> blockchain = new List<Block>();
 
+    private bool isActive = false;
+
     private void Awake()
     {
         //Create the inital block, genesis Block
@@ -18,7 +20,12 @@ public class BlockchainManager : MonoBehaviour
         blockchain.Clear();
         blockchain.Add(genesisBlock);
 
-        
+        isActive = true;
+    }
+
+    public bool GetActive()
+    {
+        return isActive;
     }
 
     //Clears old chain and set it to new chain
@@ -26,5 +33,21 @@ public class BlockchainManager : MonoBehaviour
     {
         blockchain.Clear();
         blockchain.AddRange(a_newBlockchain);
+    }
+
+    public void DebugBlockchain()
+    {
+        Debug.LogError("-----------------------------------------");
+        Debug.LogError("Genesis Block Data: ");
+        Debug.LogError("Genesis Block Previous Hash: " + System.Text.Encoding.Default.GetString(blockchain[0].GetPreviousBlockHash()));
+        Debug.LogError("Genesis Block Current Hash: " + System.Text.Encoding.Default.GetString(blockchain[0].GetCurrentBlockHash()));
+
+        for (int i = 1; i < blockchain.Count; ++i)
+        {
+            Debug.LogError("-----------------------------------------");
+            Debug.LogError("Block " + i + " Data: ");
+            Debug.LogError("Block " + i + " Previous Hash: " + System.Text.Encoding.Default.GetString(blockchain[i].GetPreviousBlockHash()));
+            Debug.LogError("Block " + i + " Current Hash: " + System.Text.Encoding.Default.GetString(blockchain[i].GetCurrentBlockHash()));
+        }
     }
 }

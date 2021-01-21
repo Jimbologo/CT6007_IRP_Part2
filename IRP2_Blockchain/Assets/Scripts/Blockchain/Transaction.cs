@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
+[System.Serializable]
 public class Transaction
 {
     private int currentUserID = -1;
@@ -35,21 +38,28 @@ public class Transaction
     public byte[] GetBytes()
     {
         //Calculate total size of the byte array
-        int stringBytesCount = ASCIIEncoding.Unicode.GetByteCount(actionTaken);
-        int totalBytesCount = (sizeof(int) * 2) + stringBytesCount;
+        //int stringBytesCount = ASCIIEncoding.Unicode.GetByteCount(actionTaken);
+        //int totalBytesCount = (sizeof(int) * 2) + stringBytesCount;
 
-        byte[] combinedData = new byte[totalBytesCount];
+        //byte[] combinedData = new byte[totalBytesCount];
 
-        byte[] currentUserIDBytes = BitConverter.GetBytes(currentUserID);
-        currentUserIDBytes.CopyTo(combinedData, 0);
+        //byte[] currentUserIDBytes = BitConverter.GetBytes(currentUserID);
+        //currentUserIDBytes.CopyTo(combinedData, 0);
 
-        byte[] targetUserIDBytes = BitConverter.GetBytes(currentUserID);
-        targetUserIDBytes.CopyTo(combinedData, 4);
+        //byte[] targetUserIDBytes = BitConverter.GetBytes(currentUserID);
+        //targetUserIDBytes.CopyTo(combinedData, 4);
 
-        byte[] actionTakenBytes = Encoding.ASCII.GetBytes(actionTaken);
-        targetUserIDBytes.CopyTo(combinedData, 8);
+        //byte[] actionTakenBytes = Encoding.ASCII.GetBytes(actionTaken);
+        //targetUserIDBytes.CopyTo(combinedData, 8);
 
-        return combinedData;
+        //return combinedData;
+
+        BinaryFormatter bf = new BinaryFormatter();
+        using (var ms = new MemoryStream())
+        {
+            bf.Serialize(ms, this);
+            return ms.ToArray();
+        }
 
     }
 }

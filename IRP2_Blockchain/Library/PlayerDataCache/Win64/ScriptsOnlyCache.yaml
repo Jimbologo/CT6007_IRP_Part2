@@ -2,6 +2,8 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - Miner
+    - NET_HandleData
+    - NET_NetworkManager
     - NET_P2PClient
     - NET_P2PHost
     - User
@@ -56,41 +58,45 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11752}
     - Class: 114
-      Script: {instanceID: 11948}
+      Script: {instanceID: 11812}
     - Class: 114
-      Script: {instanceID: 11970}
+      Script: {instanceID: 11950}
     - Class: 114
-      Script: {instanceID: 11994}
+      Script: {instanceID: 11972}
     - Class: 114
-      Script: {instanceID: 12106}
+      Script: {instanceID: 11996}
     - Class: 114
-      Script: {instanceID: 12200}
+      Script: {instanceID: 12108}
     - Class: 114
-      Script: {instanceID: 12404}
+      Script: {instanceID: 12202}
     - Class: 114
-      Script: {instanceID: 12436}
+      Script: {instanceID: 12406}
     - Class: 114
-      Script: {instanceID: 12572}
+      Script: {instanceID: 12438}
     - Class: 114
-      Script: {instanceID: 12748}
+      Script: {instanceID: 12574}
     - Class: 114
-      Script: {instanceID: 12868}
+      Script: {instanceID: 12750}
     - Class: 114
-      Script: {instanceID: 12974}
+      Script: {instanceID: 12870}
     - Class: 114
-      Script: {instanceID: 13112}
+      Script: {instanceID: 12976}
+    - Class: 114
+      Script: {instanceID: 13086}
     - Class: 114
       Script: {instanceID: 13116}
     - Class: 114
-      Script: {instanceID: 13132}
+      Script: {instanceID: 13120}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13136}
     - Class: 114
-      Script: {instanceID: 13404}
+      Script: {instanceID: 13342}
     - Class: 114
-      Script: {instanceID: 13574}
+      Script: {instanceID: 13408}
     - Class: 114
-      Script: {instanceID: 13788}
+      Script: {instanceID: 13578}
+    - Class: 114
+      Script: {instanceID: 13792}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -118,7 +124,7 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f0c7bb6f4f96895324eb19fa819847e6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: User
@@ -142,6 +148,12 @@ ScriptsOnlyBuild:
     className: TMP_Dropdown
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NET_HandleData
+  - hash:
+      serializedVersion: 2
       Hash: e7a73f5f78ba6445195ec23b74a1ce2d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -154,7 +166,7 @@ ScriptsOnlyBuild:
     className: PlayerQuitHandler
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f0c7bb6f4f96895324eb19fa819847e6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BlockchainManager
@@ -346,7 +358,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f0c7bb6f4f96895324eb19fa819847e6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Miner
@@ -386,6 +398,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: InputField
+  - hash:
+      serializedVersion: 2
+      Hash: 414aafce2037708532986883fc727322
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NET_NetworkManager
   - hash:
       serializedVersion: 2
       Hash: 908b3077da284d11de0450423ca1808e

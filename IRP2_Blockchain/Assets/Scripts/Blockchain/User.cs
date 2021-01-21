@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class User : BlockchainManager
 {
-    Miner miner;
+    private NET_NetworkManager networkManager;
     // Start is called before the first frame update
     void Start()
     {
-        miner = FindObjectOfType<Miner>();
+        networkManager = FindObjectOfType<NET_NetworkManager>();
     }
 
 
@@ -24,8 +24,11 @@ public class User : BlockchainManager
         };
 
         Block testBlock1 = new Block(blockchain[blockchain.Count - 1].GetCurrentBlockHash(), transactions1);
-        //Add block to the blockchain
-        miner.AddToBlockchain(testBlock1);
+
+        //Send a Net Message here containing the block data
+        //Send block for validation
+        Debug.LogError("New block created...Getting read to send");
+        networkManager.SendNetMessage(testBlock1, -1);
     }
 
     public void onActionClickButton2()
@@ -40,12 +43,14 @@ public class User : BlockchainManager
         };
 
         Block testBlock1 = new Block(blockchain[blockchain.Count - 1].GetCurrentBlockHash(), transactions1);
-        //Add block to the blockchain
-        miner.AddToBlockchain(testBlock1);
+
+        //Send a Net Message here containing the block data
+        //Send block for validation
+        networkManager.SendNetMessage(testBlock1, -1);
     }
 
     public void onActionDebug()
     {
-        miner.DebugBlockchain();
+        DebugBlockchain();
     }
 }

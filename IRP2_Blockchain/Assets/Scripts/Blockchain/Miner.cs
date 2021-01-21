@@ -11,6 +11,14 @@ public class Miner : BlockchainManager
     //Such as if a new block is wanting to be added, the block data and a list of transactions that have taken place will be sent here
     //That block will be validated, once validated the blockchain will be updated and passed around
 
+    private NET_NetworkManager networkManager;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        networkManager = FindObjectOfType<NET_NetworkManager>();
+    }
+
     //Validates a new block
     public void ValidateBlock(Transaction[] a_transactionsToValidate,Block a_blockToValidate)
     {
@@ -25,11 +33,14 @@ public class Miner : BlockchainManager
         //Check if the hashes are the same
         if (hashOfTransactions.SequenceEqual(a_blockToValidate.GetCurrentBlockHash()))
         {
-            Debug.Log("[CORRECT]: Block is Valid, now adding to blockchain");
+            Debug.LogError("[CORRECT]: Block is Valid, now adding to blockchain");
             blockchain.Add(a_blockToValidate);
 
-            //TODO: SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
-            FindObjectOfType<User>().UpdateBlockchain(blockchain);
+            //SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
+            Blockchain newBlockchain = new Blockchain();
+            newBlockchain.theBlockchain = blockchain;
+
+            networkManager.SendNetMessage(newBlockchain, -1);
         }
         else
         {
@@ -43,25 +54,5 @@ public class Miner : BlockchainManager
         ValidateBlock(a_blockToAdd.GetTransactions(), a_blockToAdd);
     }
 
-    public void DebugBlockchain()
-    {
-        Debug.Log("-----------------------------------------");
-        Debug.Log("Genesis Block Data: ");
-        Debug.Log("Genesis Block Previous Hash: " + System.Text.Encoding.Default.GetString(blockchain[0].GetPreviousBlockHash()));
-        Debug.Log("Genesis Block Current Hash: " + System.Text.Encoding.Default.GetString(blockchain[0].GetCurrentBlockHash()));
-
-        for (int i = 1; i < blockchain.Count; ++i)
-        {
-            Debug.Log("-----------------------------------------");
-            Debug.Log("Block " + i + " Data: ");
-            Debug.Log("Block " + i + " Previous Hash: " + System.Text.Encoding.Default.GetString(blockchain[i].GetPreviousBlockHash()));
-            Debug.Log("Block " + i + " Current Hash: " + System.Text.Encoding.Default.GetString(blockchain[i].GetCurrentBlockHash()));
-        }
-    }
-
-
-    private void Start()
-    {
-        Screen.fullScreen = false;
-    }
+    
 }

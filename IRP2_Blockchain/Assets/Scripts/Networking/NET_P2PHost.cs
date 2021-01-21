@@ -18,8 +18,12 @@ public class NET_P2PHost : MonoBehaviour
 
     private bool active = false;
 
+    NET_NetworkManager networkManager;
+
     private void Start()
     {
+        networkManager = FindObjectOfType<NET_NetworkManager>();
+
         active = true;
 
         InitaliseHost();
@@ -49,11 +53,14 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Waiting on a connection...");
 
         //Setup Socket
-        tcpListener.BeginAcceptSocket(
-        new System.AsyncCallback(SocketCallback), tcpListener);
+        //tcpListener.BeginAcceptSocket(
+        //new System.AsyncCallback(SocketCallback), tcpListener);
 
         Thread streamReading = new Thread(new ThreadStart(RecieveData));
         streamReading.Start();
+
+        Thread socketAccepting = new Thread(new ThreadStart(SocketAccepting));
+        socketAccepting.Start();
     }
 
     private async System.Threading.Tasks.Task upnpAsync()
@@ -85,14 +92,67 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Client Connection Accepted from: " + clientSocket.RemoteEndPoint);
 
         //Add client to the connected list
-        connectedClients.Add(new NET_ConnectedClient(clientSocket, connectedClients.Count));
+        int newID = connectedClients.Count;
+        connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
 
-        SendNetMessage(connectedClients.Count, "Welcome Client");
+        SendNetMessage(newID, "Welcome Client");
     }
 
     public void SendNetMessageToAll(string a_smessage)
     {
-        byte[] byteMsg = Encoding.ASCII.GetBytes(a_smessage);
+        byte[] byteMsg = new byte[4096];
+        byteMsg = Encoding.ASCII.GetBytes(a_smessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            targetSocket = connectedClients[i].connectedSocket;
+
+            if (targetSocket != null)
+            {
+                targetSocket.Send(byteMsg);
+            }
+        }
+    }
+
+    public void SendNetMessageToAll(int a_imessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_imessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            targetSocket = connectedClients[i].connectedSocket;
+
+            if (targetSocket != null)
+            {
+                targetSocket.Send(byteMsg);
+            }
+        }
+    }
+
+    public void SendNetMessageToAll(Block a_bmessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bmessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            targetSocket = connectedClients[i].connectedSocket;
+
+            if (targetSocket != null)
+            {
+                targetSocket.Send(byteMsg);
+            }
+        }
+    }
+
+    public void SendNetMessageToAll(Blockchain a_bcmessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bcmessage);
 
         Socket targetSocket = null;
         for (int i = 0; i < connectedClients.Count; ++i)
@@ -108,13 +168,86 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessage(int a_clientID, string a_smessage)
     {
-        byte[] byteMsg = Encoding.ASCII.GetBytes(a_smessage);
-
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_smessage);
 
         Socket targetSocket = null;
         for (int i = 0; i < connectedClients.Count; ++i)
         {
-            if(connectedClients[i].iID == a_clientID)
+            if (connectedClients[i].iID == a_clientID)
+            {
+                targetSocket = connectedClients[i].connectedSocket;
+            }
+        }
+
+        if (targetSocket != null)
+        {
+            targetSocket.Send(byteMsg);
+        }
+    }
+
+    public void SendNetMessage(int a_clientID, int a_imessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_imessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            if (connectedClients[i].iID == a_clientID)
+            {
+                targetSocket = connectedClients[i].connectedSocket;
+            }
+        }
+
+        if (targetSocket != null)
+        {
+            targetSocket.Send(byteMsg);
+        }
+    }
+
+    public void SendNetMessage(int a_clientID, Block a_bmessage)
+    {
+        if(a_clientID == -1)
+        {
+            SendNetMessageToAll(a_bmessage);
+            return;
+        }
+
+        Debug.LogError("Going to send block message");
+
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bmessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            if (connectedClients[i].iID == a_clientID)
+            {
+                targetSocket = connectedClients[i].connectedSocket;
+            }
+        }
+
+        if (targetSocket != null)
+        {
+            targetSocket.Send(byteMsg);
+            Debug.LogError("Sending block message");
+        }
+        else
+        {
+            Debug.LogError("targetSocket invalid");
+        }
+    }
+
+    public void SendNetMessage(int a_clientID, Blockchain a_bcmessage)
+    {
+        byte[] byteMsg = new byte[4096];
+        byteMsg = NET_HandleData.WriteData(a_bcmessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            if (connectedClients[i].iID == a_clientID)
             {
                 targetSocket = connectedClients[i].connectedSocket;
             }
@@ -128,7 +261,7 @@ public class NET_P2PHost : MonoBehaviour
 
     private void RecieveData()
     {
-        byte[] byteArray = new byte[100];
+        byte[] byteArray = new byte[4096];
 
         while (tcpListenerActive)
         { 
@@ -143,9 +276,36 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    private void SocketAccepting()
+    {
+        while (tcpListenerActive)
+        {
+            //Setup Socket
+            Socket clientSocket = tcpListener.AcceptSocket();
+
+            Debug.Log("Client Connection Accepted from: " + clientSocket.RemoteEndPoint);
+
+            //Add client to the connected list
+            int newID = connectedClients.Count;
+            connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
+
+            SendNetMessage(newID, "Welcome Client");
+        }
+    }
+
     private void HandleData(byte[] a_incomingMessage)
     {
-        Debug.Log("Client Sent a Message: " + System.Text.Encoding.Default.GetString(a_incomingMessage));
+        Debug.Log("Client Sent a Message");
+
+        //Null check networkmananger
+        if(!networkManager)
+        {
+            //find the component from scene before send to static method
+            Debug.LogError("Network Manager not found in scene, locating...");
+            networkManager = FindObjectOfType<NET_NetworkManager>();
+        }
+
+        NET_HandleData.ReadData(a_incomingMessage, networkManager);
     }
 
     private void CloseNet()

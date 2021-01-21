@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Blockchain\Transaction.cs" />
     <Compile Include="Assets\Scripts\Blockchain\User.cs" />
+    <Compile Include="Assets\Scripts\Networking\NET_HandleData.cs" />
     <Compile Include="Assets\Scripts\Blockchain\BlockchainManager.cs" />
     <Compile Include="Assets\Scripts\Blockchain\Block.cs" />
     <Compile Include="Assets\Scripts\Networking\NET_P2PClient.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="Assets\Scripts\Blockchain\Miner.cs" />
     <Compile Include="Assets\Scripts\Networking\NET_ConnectedClient.cs" />
     <Compile Include="Assets\Scripts\Networking\NET_NetworkManager.cs" />
-    <Compile Include="Assets\Scripts\Networking\NET_HandleData.cs" />
+    <Compile Include="Assets\Scripts\Blockchain\Blockchain.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

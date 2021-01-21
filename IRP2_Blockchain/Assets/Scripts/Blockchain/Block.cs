@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Security.Cryptography;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
+[System.Serializable]
 public class Block
 {
     private Transaction[] transactions;
@@ -12,7 +15,6 @@ public class Block
     private byte[] previousBlockHash;
     private byte[] currentBlockHash;
 
-    HashAlgorithm algorithm;
 
     //Constructor
     public Block(byte[] a_previousBlockHash, Transaction[] a_transactions)
@@ -20,7 +22,7 @@ public class Block
         transactions = a_transactions;
         previousBlockHash = a_previousBlockHash;
 
-        algorithm = MD5.Create();
+        HashAlgorithm algorithm = MD5.Create();
 
         //Calculate the transactions Hash
         CalculateHash();
@@ -132,5 +134,30 @@ public class Block
         }
 
         return algorithm.ComputeHash(byteList.ToArray());
+    }
+
+    public byte[] GetBytes()
+    {
+        //Calculate total size of the byte array
+        BinaryFormatter bf = new BinaryFormatter();
+        using (var ms = new MemoryStream())
+        {
+            bf.Serialize(ms, this);
+            byte[] bytes = ms.ToArray();
+            return bytes;
+        }
+    }
+
+    public static Block ConvertBytes(byte[] a_bytes)
+    {
+        //Calculate total size of the byte array
+        using (var memStream = new MemoryStream())
+        {
+            var binForm = new BinaryFormatter();
+            memStream.Write(a_bytes, 0, a_bytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            Block obj = (Block)binForm.Deserialize(memStream);
+            return obj;
+        }
     }
 }
