@@ -97,6 +97,16 @@ public class NET_P2PHost : MonoBehaviour
             connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
 
             SendNetMessage(newID, "Welcome Client");
+
+            //update every users client list
+            List<int> clients = new List<int>();
+
+            for (int i = 0; i < connectedClients.Count; ++i)
+            {
+                clients.Add(connectedClients[i].iID);
+            }
+            SendNetMessageToAll(clients);
+            networkManager.HandleClientListData(clients);
         }
     }
 
@@ -157,6 +167,23 @@ public class NET_P2PHost : MonoBehaviour
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bcmessage);
+
+        Socket targetSocket = null;
+        for (int i = 0; i < connectedClients.Count; ++i)
+        {
+            targetSocket = connectedClients[i].connectedSocket;
+
+            if (targetSocket != null)
+            {
+                targetSocket.Send(byteMsg);
+            }
+        }
+    }
+
+    public void SendNetMessageToAll(List<int> a_connectedClients)
+    {
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
+        byteMsg = NET_HandleData.WriteData(a_connectedClients);
 
         Socket targetSocket = null;
         for (int i = 0; i < connectedClients.Count; ++i)

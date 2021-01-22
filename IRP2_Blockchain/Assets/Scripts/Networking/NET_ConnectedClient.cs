@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 
+
+[System.Serializable]
 public class NET_ConnectedClient
 {
     public TcpClient tcpClient;
@@ -21,4 +23,6 @@ public class NET_ConnectedClient
         tcpClient = a_tcpClient;
         iID = a_id;
     }
+
+    
 }

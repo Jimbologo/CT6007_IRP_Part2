@@ -9,7 +9,8 @@ enum DataType
     stringType,
     intType,
     blockType,
-    blockchainType
+    blockchainType,
+    clientList
 }
 
 public class NET_HandleData : MonoBehaviour
@@ -45,6 +46,28 @@ public class NET_HandleData : MonoBehaviour
         dataKey.CopyTo(combinedData, 0);
 
         byte[] byteMsg = BitConverter.GetBytes(a_intMessage);
+        byteMsg.CopyTo(combinedData, 4);
+
+        byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
+        byteMsgLength.CopyTo(combinedData, NET_Constants.packetSize - sizeof(int));
+
+        return combinedData;
+    }
+
+    
+    //When we write data we always put a key before the data, this way we know what type of data we are sending
+    //We are writing List<NET_ConnectedClient> data
+    public static byte[] WriteData(List<int> a_connectedClients)
+    {
+        byte[] combinedData = new byte[NET_Constants.packetSize];
+
+        byte[] dataKey = new byte[4];
+        dataKey = BitConverter.GetBytes((int)DataType.clientList);
+        dataKey.CopyTo(combinedData, 0);
+
+
+        NET_ClientList clientList = new NET_ClientList(a_connectedClients);
+        byte[] byteMsg = clientList.GetBytes();
         byteMsg.CopyTo(combinedData, 4);
 
         byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
@@ -115,6 +138,9 @@ public class NET_HandleData : MonoBehaviour
             case DataType.intType:
                 HandleIntData(msgBytes);
                 break;
+            case DataType.clientList:
+                HandleClientListData(msgBytes, a_networkManager);
+                break;
             case DataType.blockType:
                 HandleBlockData(msgBytes, a_networkManager);
                 break;
@@ -156,4 +182,14 @@ public class NET_HandleData : MonoBehaviour
 
         a_networkManager.HandleBlockchainData(dataConverted);
     }
+
+    private static void HandleClientListData(byte[] a_data, NET_NetworkManager a_networkManager)
+    {
+        NET_ClientList dataConverted = NET_ClientList.ConvertBytes(a_data);
+
+        Debug.LogError("Updated Client List Recieved");
+
+        a_networkManager.HandleClientListData(dataConverted);
+    }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 static class NET_Constants
 {
@@ -18,6 +19,9 @@ public class NET_NetworkManager : MonoBehaviour
     private Miner miner;
     [SerializeField]
     private User user;
+
+    [SerializeField]
+    private UserActionPanel userActionPanel;
 
     private void Awake()
     {
@@ -135,5 +139,17 @@ public class NET_NetworkManager : MonoBehaviour
         {
             Debug.LogError("User or miner not found, this is an issue!");
         }
+    }
+
+    public void HandleClientListData(NET_ClientList a_clientListData)
+    {
+        userActionPanel.clientListData = a_clientListData;
+        userActionPanel.updateRequired = true;
+    }
+
+    public void HandleClientListData(List<int> a_clientListData)
+    {
+        userActionPanel.clientListData = new NET_ClientList(a_clientListData);
+        userActionPanel.updateRequired = true;
     }
 }

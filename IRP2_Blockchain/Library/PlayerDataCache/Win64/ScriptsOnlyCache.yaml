@@ -9,6 +9,7 @@ ScriptsOnlyBuild:
     - NET_P2PClient
     - NET_P2PHost
     - User
+    - UserActionPanel
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
@@ -28,6 +29,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.ContentSizeFitter
+    - UnityEngine.UI.Dropdown
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.GridLayoutGroup
     - UnityEngine.UI.HorizontalLayoutGroup
@@ -37,6 +39,8 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Scrollbar
+    - UnityEngine.UI.Text
+    - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/SampleScene.unity:
@@ -70,6 +74,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11812}
     - Class: 114
       Script: {instanceID: 11816}
+    - Class: 114
+      Script: {instanceID: 11932}
     - Class: 114
       Script: {instanceID: 11934}
     - Class: 114
@@ -119,7 +125,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13582}
     - Class: 114
+      Script: {instanceID: 13782}
+    - Class: 114
       Script: {instanceID: 13796}
+    - Class: 114
+      Script: {instanceID: 13814}
+    - Class: 114
+      Script: {instanceID: 25994}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -431,7 +443,7 @@ ScriptsOnlyBuild:
     className: InputField
   - hash:
       serializedVersion: 2
-      Hash: 414aafce2037708532986883fc727322
+      Hash: 2a58afdc1620a49eb1faf33932752428
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NET_NetworkManager
@@ -615,6 +627,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 946535260a3dd9c84282ba888b0f0557
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UserActionPanel
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
