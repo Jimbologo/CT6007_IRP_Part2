@@ -37,10 +37,9 @@ public class Miner : BlockchainManager
             blockchain.Add(a_blockToValidate);
 
             //SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
-            Blockchain newBlockchain = new Blockchain();
-            newBlockchain.theBlockchain = blockchain;
-            StartCoroutine(DelayedBlockchainUpdater(newBlockchain));
-            
+            Blockchain newBlockchain = new Blockchain(blockchain);
+            networkManager.SendNetMessage(newBlockchain, -1);
+
         }
         else
         {
@@ -48,13 +47,6 @@ public class Miner : BlockchainManager
         }
     }
 
-    //So that all client are ready to receieve the data we delay
-    private IEnumerator DelayedBlockchainUpdater(Blockchain a_blockchain)
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        networkManager.SendNetMessage(a_blockchain, -1);
-    }
 
     //This would normally be a message sent from a user not this function
     public void AddToBlockchain(Block a_blockToAdd)

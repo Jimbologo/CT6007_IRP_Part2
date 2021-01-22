@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+static class NET_Constants
+{
+    public const int packetSize = 20480; //20KB
+}
+
 public class NET_NetworkManager : MonoBehaviour
 {
     [SerializeField]
@@ -109,11 +114,12 @@ public class NET_NetworkManager : MonoBehaviour
 
     public void HandleBlockchainData(Blockchain a_blockchainData)
     {
-        Debug.LogError("Handling blockchain data!");
+        
 
         //Might need to forward this to all other connected clients
         if (p2pHost && p2pHost.isActive())
         {
+            Debug.LogError("Sending blockchain data to ALL!");
             p2pHost.SendNetMessageToAll(a_blockchainData);
         }
 

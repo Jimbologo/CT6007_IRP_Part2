@@ -52,10 +52,6 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Host local end point: " + tcpListener.LocalEndpoint);
         Debug.Log("Waiting on a connection...");
 
-        //Setup Socket
-        //tcpListener.BeginAcceptSocket(
-        //new System.AsyncCallback(SocketCallback), tcpListener);
-
         Thread streamReading = new Thread(new ThreadStart(RecieveData));
         streamReading.Start();
 
@@ -84,23 +80,31 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Port mapping by UPnP complete");
     }
 
-    private void SocketCallback(System.IAsyncResult a_iAsyncResult)
+    private void SocketAccepting()
     {
-        TcpListener clientTCPlistener = (TcpListener)a_iAsyncResult.AsyncState;
-        Socket clientSocket = clientTCPlistener.EndAcceptSocket(a_iAsyncResult);
+        while (tcpListenerActive)
+        {
+            //Setup Socket
+            Socket clientSocket = tcpListener.AcceptSocket();
 
-        Debug.Log("Client Connection Accepted from: " + clientSocket.RemoteEndPoint);
+            //Turn blocking off so we can easily loop through all clients later (VERY IMPORTANT otherwise only 1 client will be able to send messages at once)
+            //clientSocket.Blocking = false;
 
-        //Add client to the connected list
-        int newID = connectedClients.Count;
-        connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
+            Debug.Log("Client Connection Accepted from: " + clientSocket.RemoteEndPoint);
 
-        SendNetMessage(newID, "Welcome Client");
+            //Add client to the connected list
+            int newID = connectedClients.Count;
+            connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
+
+            SendNetMessage(newID, "Welcome Client");
+        }
     }
+
+    #region Send Message Functions
 
     public void SendNetMessageToAll(string a_smessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = Encoding.ASCII.GetBytes(a_smessage);
 
         Socket targetSocket = null;
@@ -117,7 +121,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessageToAll(int a_imessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_imessage);
 
         Socket targetSocket = null;
@@ -134,7 +138,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessageToAll(Block a_bmessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bmessage);
 
         Socket targetSocket = null;
@@ -151,7 +155,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessageToAll(Blockchain a_bcmessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bcmessage);
 
         Socket targetSocket = null;
@@ -168,7 +172,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessage(int a_clientID, string a_smessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_smessage);
 
         Socket targetSocket = null;
@@ -188,7 +192,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessage(int a_clientID, int a_imessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_imessage);
 
         Socket targetSocket = null;
@@ -216,7 +220,7 @@ public class NET_P2PHost : MonoBehaviour
 
         Debug.LogError("Going to send block message");
 
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bmessage);
 
         Socket targetSocket = null;
@@ -241,7 +245,7 @@ public class NET_P2PHost : MonoBehaviour
 
     public void SendNetMessage(int a_clientID, Blockchain a_bcmessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bcmessage);
 
         Socket targetSocket = null;
@@ -259,37 +263,29 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void RecieveData()
     {
-        byte[] byteArray = new byte[4096];
+        byte[] byteArray = new byte[NET_Constants.packetSize];
 
         while (tcpListenerActive)
         { 
+            //loop through each 
             for (int i = 0; i < connectedClients.Count; ++i)
             {
-                if (connectedClients[i] != null && connectedClients[i].connectedSocket != null &&
-                    connectedClients[i].connectedSocket.Connected && connectedClients[i].connectedSocket.Receive(byteArray) > 0)
+                
+                //Lets check that when we recieve it contains data
+                if (connectedClients[i] != null 
+                    && connectedClients[i].connectedSocket != null
+                    && connectedClients[i].connectedSocket.Connected 
+                    && connectedClients[i].connectedSocket.Available > 0
+                    && connectedClients[i].connectedSocket.Receive(byteArray) > 0)
                 {
+                    //Take the data from that was recieve and lets process it
                     HandleData(byteArray);
                 }
             }
-        }
-    }
-
-    private void SocketAccepting()
-    {
-        while (tcpListenerActive)
-        {
-            //Setup Socket
-            Socket clientSocket = tcpListener.AcceptSocket();
-
-            Debug.Log("Client Connection Accepted from: " + clientSocket.RemoteEndPoint);
-
-            //Add client to the connected list
-            int newID = connectedClients.Count;
-            connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
-
-            SendNetMessage(newID, "Welcome Client");
         }
     }
 

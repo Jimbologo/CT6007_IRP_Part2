@@ -9,6 +9,11 @@ public class Blockchain
 {
     public List<Block> theBlockchain = new List<Block>();
 
+    public Blockchain(List<Block> a_theBlockchain)
+    {
+        theBlockchain = a_theBlockchain;
+    }
+
     public byte[] GetBytes()
     {
         //Calculate total size of the byte array

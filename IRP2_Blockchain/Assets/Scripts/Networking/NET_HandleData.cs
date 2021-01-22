@@ -14,13 +14,12 @@ enum DataType
 
 public class NET_HandleData : MonoBehaviour
 {
-    private static int messageByteSize = 4096;
 
     //When we write data we always put a key before the data, this way we know what type of data we are sending
     //We are writing string data
     public static byte[] WriteData(string a_stringMessage)
     {
-        byte[] combinedData = new byte[messageByteSize];
+        byte[] combinedData = new byte[NET_Constants.packetSize];
 
         byte[] dataKey = new byte[4];
         dataKey = BitConverter.GetBytes((int)DataType.stringType);
@@ -30,7 +29,7 @@ public class NET_HandleData : MonoBehaviour
         byteMsg.CopyTo(combinedData, 4);
 
         byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
-        byteMsgLength.CopyTo(combinedData, messageByteSize - sizeof(int));
+        byteMsgLength.CopyTo(combinedData, NET_Constants.packetSize - sizeof(int));
 
         return combinedData;
     }
@@ -39,7 +38,7 @@ public class NET_HandleData : MonoBehaviour
     //We are writing int data
     public static byte[] WriteData(int a_intMessage)
     {
-        byte[] combinedData = new byte[messageByteSize];
+        byte[] combinedData = new byte[NET_Constants.packetSize];
 
         byte[] dataKey = new byte[4];
         dataKey = BitConverter.GetBytes((int)DataType.intType);
@@ -49,7 +48,7 @@ public class NET_HandleData : MonoBehaviour
         byteMsg.CopyTo(combinedData, 4);
 
         byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
-        byteMsgLength.CopyTo(combinedData, messageByteSize - sizeof(int));
+        byteMsgLength.CopyTo(combinedData, NET_Constants.packetSize - sizeof(int));
 
         return combinedData;
     }
@@ -58,7 +57,7 @@ public class NET_HandleData : MonoBehaviour
     //We are writing block data
     public static byte[] WriteData(Block a_blockMessage)
     {
-        byte[] combinedData = new byte[messageByteSize];
+        byte[] combinedData = new byte[NET_Constants.packetSize];
 
         byte[] dataKey = new byte[4];
         dataKey = BitConverter.GetBytes((int)DataType.blockType);
@@ -68,7 +67,7 @@ public class NET_HandleData : MonoBehaviour
         byteMsg.CopyTo(combinedData, 4);
 
         byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
-        byteMsgLength.CopyTo(combinedData, messageByteSize - sizeof(int));
+        byteMsgLength.CopyTo(combinedData, NET_Constants.packetSize - sizeof(int));
 
         return combinedData;
     }
@@ -77,7 +76,7 @@ public class NET_HandleData : MonoBehaviour
     //We are writing blockchain data
     public static byte[] WriteData(Blockchain a_blockchainMessage)
     {
-        byte[] combinedData = new byte[messageByteSize];
+        byte[] combinedData = new byte[NET_Constants.packetSize];
 
         byte[] dataKey = new byte[4];
         dataKey = BitConverter.GetBytes((int)DataType.blockchainType);
@@ -87,7 +86,7 @@ public class NET_HandleData : MonoBehaviour
         byteMsg.CopyTo(combinedData, 4);
 
         byte[] byteMsgLength = BitConverter.GetBytes(byteMsg.Length);
-        byteMsgLength.CopyTo(combinedData, messageByteSize - sizeof(int));
+        byteMsgLength.CopyTo(combinedData, NET_Constants.packetSize - sizeof(int));
 
         return combinedData;
     }
@@ -102,7 +101,7 @@ public class NET_HandleData : MonoBehaviour
 
         //Get just the message from the data
         byte[] msgLengthBytes = new byte[4];
-        Array.Copy(a_byteArray, messageByteSize - sizeof(int), msgLengthBytes, 0, sizeof(int));
+        Array.Copy(a_byteArray, NET_Constants.packetSize - sizeof(int), msgLengthBytes, 0, sizeof(int));
         int msgLength = BitConverter.ToInt32(msgLengthBytes, 0);
 
         byte[] msgBytes = new byte[msgLength];

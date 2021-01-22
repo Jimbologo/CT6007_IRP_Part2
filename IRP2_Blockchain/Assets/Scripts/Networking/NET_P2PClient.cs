@@ -20,6 +20,8 @@ public class NET_P2PClient : MonoBehaviour
 
     NET_NetworkManager networkManager;
 
+
+
     private void Start()
     {
         networkManager = FindObjectOfType<NET_NetworkManager>();
@@ -58,45 +60,51 @@ public class NET_P2PClient : MonoBehaviour
 
     public void SendNetMessage(string a_smessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_smessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
+        //stream.Close();
     }
 
     public void SendNetMessage(int a_imessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_imessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
+        //stream.Close();
     }
 
     public void SendNetMessage(Block a_bmessage)
     {
         Debug.LogError("Going to send block message");
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bmessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
+        //stream.Close();
     }
 
     public void SendNetMessage(Blockchain a_bcmessage)
     {
-        byte[] byteMsg = new byte[4096];
+        byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bcmessage);
         NetworkStream stream = tcpClient.GetStream();
         stream.Write(byteMsg, 0, byteMsg.Length);
+        //stream.Close();
+        Debug.LogError("Blockchain message sent");
     }
 
     private void RecieveData()
     {
-        byte[] byteArray = new byte[4096];
+        byte[] byteArray = new byte[NET_Constants.packetSize];
         while (tcpClient.Connected)
         {
+            
             NetworkStream stream = tcpClient.GetStream();
 
-            if (stream != null && stream.Read(byteArray, 0, 4096) > 0)
+            if (stream != null && stream.Read(byteArray, 0, NET_Constants.packetSize) > 0)
             {
                 HandleData(byteArray);
             }

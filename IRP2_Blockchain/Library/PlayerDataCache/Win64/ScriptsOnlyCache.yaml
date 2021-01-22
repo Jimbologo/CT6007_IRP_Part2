@@ -27,6 +27,7 @@ ScriptsOnlyBuild:
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.GridLayoutGroup
     - UnityEngine.UI.HorizontalLayoutGroup
@@ -68,55 +69,57 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11812}
     - Class: 114
-      Script: {instanceID: 11932}
+      Script: {instanceID: 11816}
     - Class: 114
-      Script: {instanceID: 11950}
+      Script: {instanceID: 11934}
     - Class: 114
-      Script: {instanceID: 11972}
+      Script: {instanceID: 11952}
     - Class: 114
-      Script: {instanceID: 11996}
+      Script: {instanceID: 11974}
     - Class: 114
-      Script: {instanceID: 12036}
+      Script: {instanceID: 11998}
     - Class: 114
-      Script: {instanceID: 12108}
+      Script: {instanceID: 12038}
     - Class: 114
-      Script: {instanceID: 12202}
+      Script: {instanceID: 12084}
     - Class: 114
-      Script: {instanceID: 12308}
+      Script: {instanceID: 12110}
     - Class: 114
-      Script: {instanceID: 12406}
+      Script: {instanceID: 12204}
     - Class: 114
-      Script: {instanceID: 12438}
+      Script: {instanceID: 12310}
     - Class: 114
-      Script: {instanceID: 12574}
+      Script: {instanceID: 12408}
     - Class: 114
-      Script: {instanceID: 12634}
+      Script: {instanceID: 12440}
     - Class: 114
-      Script: {instanceID: 12750}
+      Script: {instanceID: 12576}
     - Class: 114
-      Script: {instanceID: 12870}
+      Script: {instanceID: 12636}
     - Class: 114
-      Script: {instanceID: 12976}
+      Script: {instanceID: 12752}
     - Class: 114
-      Script: {instanceID: 13086}
+      Script: {instanceID: 12872}
     - Class: 114
-      Script: {instanceID: 13116}
+      Script: {instanceID: 12978}
     - Class: 114
-      Script: {instanceID: 13120}
+      Script: {instanceID: 13088}
     - Class: 114
-      Script: {instanceID: 13136}
+      Script: {instanceID: 13118}
     - Class: 114
-      Script: {instanceID: 13342}
+      Script: {instanceID: 13122}
     - Class: 114
-      Script: {instanceID: 13408}
+      Script: {instanceID: 13138}
     - Class: 114
-      Script: {instanceID: 13578}
+      Script: {instanceID: 13248}
     - Class: 114
-      Script: {instanceID: 13792}
+      Script: {instanceID: 13346}
     - Class: 114
-      Script: {instanceID: 16744}
+      Script: {instanceID: 13412}
     - Class: 114
-      Script: {instanceID: 17160}
+      Script: {instanceID: 13582}
+    - Class: 114
+      Script: {instanceID: 13796}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -174,6 +177,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NET_HandleData
+  - hash:
+      serializedVersion: 2
+      Hash: 5674ca04cd98852382b3a39c1ac128c9
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BlockUI
   - hash:
       serializedVersion: 2
       Hash: e7a73f5f78ba6445195ec23b74a1ce2d
@@ -470,6 +479,12 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
+      Hash: 31583046d30aa5b7fc5ae7b8fc17108b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BlockchainDebugging
+  - hash:
+      serializedVersion: 2
       Hash: 760787567e1b60d64a3e421ab83ee14a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -600,18 +615,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 31583046d30aa5b7fc5ae7b8fc17108b
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: BlockchainDebugging
-  - hash:
-      serializedVersion: 2
-      Hash: ba231512ae645604b7ed5d4d40cb5ec3
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: BlockUI
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

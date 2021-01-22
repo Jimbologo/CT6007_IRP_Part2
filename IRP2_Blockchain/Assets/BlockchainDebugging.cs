@@ -47,6 +47,9 @@ public class BlockchainDebugging : MonoBehaviour
         //Clear the current list
         blocksUIList.Clear();
 
+        Blockchain tempBlockchain = new Blockchain(blockchainData);
+        int blockchainSize = tempBlockchain.GetBytes().Length;
+
         //Loop through every block in the blockchain data
         for (int i = 0; i < blockchainData.Count; ++i)
         {
@@ -54,7 +57,9 @@ public class BlockchainDebugging : MonoBehaviour
             BlockUI blockUI = newBlock.GetComponent<BlockUI>();
             blockUI.SetupUI(Encoding.ASCII.GetString(blockchainData[i].GetCurrentBlockHash()),
                             Encoding.ASCII.GetString(blockchainData[i].GetPreviousBlockHash()),
-                            blockchainData[i].GetTransactions().Length);
+                            blockchainData[i].GetTransactions().Length,
+                            blockchainData[i].GetBytes().Length,
+                            blockchainSize);
 
             blocksUIList.Add(newBlock);
         }
