@@ -23,6 +23,11 @@ public class NET_NetworkManager : MonoBehaviour
     [SerializeField]
     private UserActionPanel userActionPanel;
 
+    [SerializeField]
+    private PlayerDataManager playerDataManager;
+
+    public int myID = -1;
+
     private void Awake()
     {
         Screen.SetResolution(800,800,false);
@@ -151,5 +156,10 @@ public class NET_NetworkManager : MonoBehaviour
     {
         userActionPanel.clientListData = new NET_ClientList(a_clientListData);
         userActionPanel.updateRequired = true;
+    }
+
+    public void UpdatePlayerData()
+    {
+        playerDataManager.UpdateValues(myID);
     }
 }

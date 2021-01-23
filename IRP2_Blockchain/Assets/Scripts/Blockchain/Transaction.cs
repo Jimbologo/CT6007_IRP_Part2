@@ -11,9 +11,9 @@ public class Transaction
 {
     private int currentUserID = -1;
     private int targetUserID = -1;
-    private string actionTaken = "";
+    private Action actionTaken;
 
-    public Transaction(int a_currentUserID, int a_targetUserID, string a_actionTaken)
+    public Transaction(int a_currentUserID, int a_targetUserID, Action a_actionTaken)
     {
         currentUserID = a_currentUserID;
         targetUserID = a_targetUserID;
@@ -30,7 +30,7 @@ public class Transaction
         return targetUserID;
     }
 
-    public string getActionTaken()
+    public Action getActionTaken()
     {
         return actionTaken;
     }

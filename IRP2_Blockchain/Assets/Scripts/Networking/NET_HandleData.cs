@@ -136,7 +136,7 @@ public class NET_HandleData : MonoBehaviour
                 HandleStringData(msgBytes);
                 break;
             case DataType.intType:
-                HandleIntData(msgBytes);
+                HandleIntData(msgBytes, a_networkManager);
                 break;
             case DataType.clientList:
                 HandleClientListData(msgBytes, a_networkManager);
@@ -159,10 +159,13 @@ public class NET_HandleData : MonoBehaviour
         Debug.LogError("New String Recieved: " + dataConverted);
     }
 
-    private static void HandleIntData(byte[] a_data)
+    private static void HandleIntData(byte[] a_data, NET_NetworkManager a_networkManager)
     {
         int dataConverted = BitConverter.ToInt32(a_data, 0);
-        Debug.LogError("New Int Recieved: " + dataConverted);
+        Debug.LogError("New ID Recieved: " + dataConverted);
+
+        a_networkManager.myID = dataConverted;
+        a_networkManager.UpdatePlayerData();
     }
 
     private static void HandleBlockData(byte[] a_data, NET_NetworkManager a_networkManager)
@@ -191,5 +194,6 @@ public class NET_HandleData : MonoBehaviour
 
         a_networkManager.HandleClientListData(dataConverted);
     }
+
 
 }

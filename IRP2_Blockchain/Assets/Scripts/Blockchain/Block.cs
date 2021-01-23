@@ -105,21 +105,7 @@ public class Block
         return thisHash;
     }
 
-    //Convert Transaction Object to Byte Hash
-    public static byte[] GetTransactionBytes(Transaction a_newTransaction)
-    {
 
-        byte[] currentUserIDBytes = BitConverter.GetBytes(a_newTransaction.getCurrentUserID());
-        byte[] targetUserIDBytes = BitConverter.GetBytes(a_newTransaction.getTargetUserID());
-        byte[] actionTakenBytes = Encoding.UTF8.GetBytes(a_newTransaction.getActionTaken());
-
-        List<byte> byteList = new List<byte>();
-        byteList.AddRange(currentUserIDBytes);
-        byteList.AddRange(targetUserIDBytes);
-        byteList.AddRange(actionTakenBytes);
-
-        return byteList.ToArray();
-    }
 
     //Convert Transactions Array to Byte Hash
     public static byte[] GetTransactionArrayHash(Transaction[] a_newTransactions)
@@ -129,7 +115,7 @@ public class Block
 
         for (int i = 0; i < a_newTransactions.Length; ++i)
         {
-            byte[] bytesOfTransaction = GetTransactionBytes(a_newTransactions[i]);
+            byte[] bytesOfTransaction = a_newTransactions[i].GetBytes();
             byteList.AddRange(bytesOfTransaction);
         }
 

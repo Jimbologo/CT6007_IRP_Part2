@@ -16,10 +16,13 @@ public class BlockchainManager : MonoBehaviour
     [SerializeField]
     private BlockchainDebugging blockchainDebugging;
 
+    [SerializeField]
+    private PlayerDataManager playerDataManager;
+
     private void Awake()
     {
         //Create the inital block, genesis Block
-        Block genesisBlock = new Block(new byte[] { }, new Transaction[] { new Transaction(0, 0, "abc") });
+        Block genesisBlock = new Block(new byte[] { }, new Transaction[] { new Transaction(0, 0, new Action(ActionType.GiveCoins,"Gensis Block", 0)) });
         //Add genesis block to the blockchain
         blockchain.Clear();
         blockchain.Add(genesisBlock);
@@ -40,6 +43,8 @@ public class BlockchainManager : MonoBehaviour
 
         //Update the UI representing blockchain data
         blockchainDebugging.UpdateBlockchainData(a_newBlockchain);
+
+        playerDataManager.CalculateBlockchain(a_newBlockchain);
     }
 
     public void DebugBlockchain()

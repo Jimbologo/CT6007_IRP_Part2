@@ -57,6 +57,9 @@ public class NET_P2PHost : MonoBehaviour
 
         Thread socketAccepting = new Thread(new ThreadStart(SocketAccepting));
         socketAccepting.Start();
+
+        networkManager.myID = -1;
+        networkManager.UpdatePlayerData();
     }
 
     private async System.Threading.Tasks.Task upnpAsync()
@@ -96,7 +99,8 @@ public class NET_P2PHost : MonoBehaviour
             int newID = connectedClients.Count;
             connectedClients.Add(new NET_ConnectedClient(clientSocket, newID));
 
-            SendNetMessage(newID, "Welcome Client");
+            SendNetMessage(newID, "Welcome Client: ");
+            SendNetMessage(newID, newID);
 
             //update every users client list
             List<int> clients = new List<int>();
@@ -318,7 +322,7 @@ public class NET_P2PHost : MonoBehaviour
 
     private void HandleData(byte[] a_incomingMessage)
     {
-        Debug.Log("Client Sent a Message");
+        Debug.LogError("Client Sent a Message");
 
         //Null check networkmananger
         if(!networkManager)

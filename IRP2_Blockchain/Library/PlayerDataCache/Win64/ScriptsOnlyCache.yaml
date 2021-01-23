@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - ActionEventPass
     - BlockUI
     - BlockchainDebugging
     - Miner
@@ -8,6 +9,7 @@ ScriptsOnlyBuild:
     - NET_NetworkManager
     - NET_P2PClient
     - NET_P2PHost
+    - PlayerDataManager
     - User
     - UserActionPanel
     Unity.Rider.Editor.dll:
@@ -107,31 +109,35 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12872}
     - Class: 114
-      Script: {instanceID: 12978}
+      Script: {instanceID: 12938}
     - Class: 114
-      Script: {instanceID: 13088}
+      Script: {instanceID: 12980}
     - Class: 114
-      Script: {instanceID: 13118}
+      Script: {instanceID: 13090}
     - Class: 114
-      Script: {instanceID: 13122}
+      Script: {instanceID: 13120}
     - Class: 114
-      Script: {instanceID: 13138}
+      Script: {instanceID: 13124}
     - Class: 114
-      Script: {instanceID: 13248}
+      Script: {instanceID: 13140}
     - Class: 114
-      Script: {instanceID: 13346}
+      Script: {instanceID: 13250}
     - Class: 114
-      Script: {instanceID: 13412}
+      Script: {instanceID: 13348}
     - Class: 114
-      Script: {instanceID: 13582}
+      Script: {instanceID: 13414}
     - Class: 114
-      Script: {instanceID: 13782}
+      Script: {instanceID: 13584}
     - Class: 114
-      Script: {instanceID: 13796}
+      Script: {instanceID: 13786}
     - Class: 114
-      Script: {instanceID: 13814}
+      Script: {instanceID: 13800}
     - Class: 114
-      Script: {instanceID: 25994}
+      Script: {instanceID: 13818}
+    - Class: 114
+      Script: {instanceID: 32962}
+    - Class: 114
+      Script: {instanceID: 38944}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -161,7 +167,7 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
-      Hash: 3e5b3edf5411b0190d90939c970b3801
+      Hash: 9efe444814980253c9c7db210d9852ac
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: User
@@ -209,7 +215,7 @@ ScriptsOnlyBuild:
     className: PlayerQuitHandler
   - hash:
       serializedVersion: 2
-      Hash: 3e5b3edf5411b0190d90939c970b3801
+      Hash: f253ece4ed6cf27577e271fe684e110a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BlockchainManager
@@ -401,7 +407,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 3e5b3edf5411b0190d90939c970b3801
+      Hash: f253ece4ed6cf27577e271fe684e110a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Miner
@@ -431,6 +437,12 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
+      Hash: 946535260a3dd9c84282ba888b0f0557
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UserActionPanel
+  - hash:
+      serializedVersion: 2
       Hash: 3164bc883ff663a5cdb32d1ef7e7c0c5
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -443,7 +455,7 @@ ScriptsOnlyBuild:
     className: InputField
   - hash:
       serializedVersion: 2
-      Hash: 2a58afdc1620a49eb1faf33932752428
+      Hash: 121005a4bb3e75f302849b77bde13179
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NET_NetworkManager
@@ -629,10 +641,16 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: 946535260a3dd9c84282ba888b0f0557
+      Hash: 1258ea39af837d0ee06e522828e7f587
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: UserActionPanel
+    className: PlayerDataManager
+  - hash:
+      serializedVersion: 2
+      Hash: c95b933ce4c85b3f9f1783d9cdff099a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ActionEventPass
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
