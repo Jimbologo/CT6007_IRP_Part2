@@ -23,6 +23,11 @@ public class UserActionPanel : MonoBehaviour
     private void UpdateDropdown()
     {
         List<string> playerIDs = new List<string>();
+
+        //We manually add the host ID
+        playerIDs.Add("Player: " + -1);
+
+   
         for (int i = 0; i < clientListData.clients.Count; ++i)
         {
             playerIDs.Add("Player: " + clientListData.clients[i].ToString());

@@ -16,6 +16,9 @@ public class PlayerDataManager : MonoBehaviour
     private int icoins = 0;
     private int ihealth = 100;
 
+    private int idefaultCoins = 0;
+    private int idefaultHealth = 100;
+
     private bool bupdateRequired = false;
 
     private void Update()
@@ -53,8 +56,11 @@ public class PlayerDataManager : MonoBehaviour
     //We calculate our values from the blockchain
     public void CalculateBlockchain(List<Block> a_blockchain)
     {
-        //we loop through each block and transaction, find action relating to us and apply
+        //We reset value to default
+        icoins = idefaultCoins;
+        ihealth = idefaultHealth;
 
+        //we loop through each block and transaction, find action relating to us and apply
         for (int i = 0; i < a_blockchain.Count; ++i)
         {
             Transaction[] transactions = a_blockchain[i].GetTransactions();
@@ -70,11 +76,6 @@ public class PlayerDataManager : MonoBehaviour
                        || transactions[j].getActionTaken().actionType == ActionType.TakeCoins)
                     {
                         icoins -= transactions[j].getActionTaken().valueChange;
-                    }
-                    else if (transactions[j].getActionTaken().actionType == ActionType.GiveHealth
-                             || transactions[j].getActionTaken().actionType == ActionType.TakeHealth)
-                    {
-                        ihealth -= transactions[j].getActionTaken().valueChange;
                     }
                 }
                 else if(transactions[j] != null && transactions[j].getTargetUserID() == iplayerID)
@@ -95,5 +96,8 @@ public class PlayerDataManager : MonoBehaviour
                 }
             }
         }
+
+        //Values have been updated so lets update the text components
+        bupdateRequired = true;
     }
 }

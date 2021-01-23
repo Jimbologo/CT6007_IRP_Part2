@@ -28,7 +28,7 @@ public class User : BlockchainManager
 
         if (transactionsBuffer.Count < imaxBufferSize)
         {
-            Transaction newTransaction = new Transaction(networkManager.myID, playerSelectionDropdown.value, new Action(actionToTaken.actionType,actionToTaken.actionDescription, actionToTaken.valueChange));
+            Transaction newTransaction = new Transaction(networkManager.myID, playerSelectionDropdown.value - 1, new Action(actionToTaken.actionType,actionToTaken.actionDescription, actionToTaken.valueChange));
             transactionsBuffer.Add(newTransaction);
 
             Debug.LogError($"Transaction created involving yourself and player {playerSelectionDropdown.value} to {actionToTaken.actionDescription} added to buffer");

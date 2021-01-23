@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionType: 0
   actionDescription: 
-  valueChange: 100
+  valueChange: -100
