@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading;
 using Open.Nat;
 
+/// <summary>
+/// Host Network Managment
+/// </summary>
 public class NET_P2PHost : MonoBehaviour
 {
     private int hostPort = 25667;
@@ -29,12 +32,18 @@ public class NET_P2PHost : MonoBehaviour
         InitaliseHost();
     }
 
+    /// <summary>
+    /// Gets the active state
+    /// </summary>
+    /// <returns></returns>
     public bool isActive()
     {
         return active;
     }
 
-    //Here we start the TCP Lister and ready to connect clients
+    /// <summary>
+    /// start the TCP Lister and ready to connect clients
+    /// </summary>
     private async void InitaliseHost()
     {
         //Setup UPnP Port mapping
@@ -52,16 +61,23 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Host local end point: " + tcpListener.LocalEndpoint);
         Debug.Log("Waiting on a connection...");
 
+        //Start a new thread for recieveing data
         Thread streamReading = new Thread(new ThreadStart(RecieveData));
         streamReading.Start();
 
+        //start a new thread for accepting clients
         Thread socketAccepting = new Thread(new ThreadStart(SocketAccepting));
         socketAccepting.Start();
 
+        //Set my Net ID and call update UI
         networkManager.myID = -1;
         networkManager.UpdatePlayerData();
     }
 
+    /// <summary>
+    /// Async Port Map Nat Device (Port punchthrough for Nat Supported routers)
+    /// </summary>
+    /// <returns></returns>
     private async System.Threading.Tasks.Task upnpAsync()
     {
         var discoverer = new NatDiscoverer();
@@ -75,6 +91,7 @@ public class NET_P2PHost : MonoBehaviour
         // create a new mapping in the router
         await device.CreatePortMapAsync(new Mapping(Protocol.Tcp, hostPort, hostPort, "Blockchain"));
 
+        //Log mappings
         foreach (var mapping in await device.GetAllMappingsAsync())
         {
             Debug.Log(mapping);
@@ -83,6 +100,9 @@ public class NET_P2PHost : MonoBehaviour
         Debug.Log("Port mapping by UPnP complete");
     }
 
+    /// <summary>
+    /// On a new thread, Listen for clients connecting
+    /// </summary>
     private void SocketAccepting()
     {
         while (tcpListenerActive)
@@ -109,6 +129,8 @@ public class NET_P2PHost : MonoBehaviour
             {
                 clients.Add(connectedClients[i].iID);
             }
+
+            //Send client list to all clients
             SendNetMessageToAll(clients);
             networkManager.HandleClientListData(clients);
         }
@@ -116,11 +138,17 @@ public class NET_P2PHost : MonoBehaviour
 
     #region Send Message Functions
 
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="a_smessage"></param>
     public void SendNetMessageToAll(string a_smessage)
     {
+        //Convert Message to Byte Array
         byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = Encoding.ASCII.GetBytes(a_smessage);
 
+        //Find socket of each client and send data
         Socket targetSocket = null;
         for (int i = 0; i < connectedClients.Count; ++i)
         {
@@ -133,6 +161,10 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="a_imessage"></param>
     public void SendNetMessageToAll(int a_imessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -150,6 +182,10 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="a_bmessage"></param>
     public void SendNetMessageToAll(Block a_bmessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -167,6 +203,10 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="a_bcmessage"></param>
     public void SendNetMessageToAll(Blockchain a_bcmessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -184,6 +224,10 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to all clients
+    /// </summary>
+    /// <param name="a_connectedClients"></param>
     public void SendNetMessageToAll(List<int> a_connectedClients)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -201,6 +245,11 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to client at ID
+    /// </summary>
+    /// <param name="a_clientID"></param>
+    /// <param name="a_smessage"></param>
     public void SendNetMessage(int a_clientID, string a_smessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -221,6 +270,11 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to client at ID
+    /// </summary>
+    /// <param name="a_clientID"></param>
+    /// <param name="a_imessage"></param>
     public void SendNetMessage(int a_clientID, int a_imessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -241,19 +295,27 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Send message to client at ID
+    /// </summary>
+    /// <param name="a_clientID"></param>
+    /// <param name="a_bmessage"></param>
     public void SendNetMessage(int a_clientID, Block a_bmessage)
     {
+        //Make sure we are not sending message to ourself
         if(a_clientID == -1)
         {
             SendNetMessageToAll(a_bmessage);
             return;
         }
 
-        Debug.LogError("Going to send block message");
+        Debug.Log("Going to send block message");
 
+        //Write data to byte array
         byte[] byteMsg = new byte[NET_Constants.packetSize];
         byteMsg = NET_HandleData.WriteData(a_bmessage);
 
+        //Get socket of specific client
         Socket targetSocket = null;
         for (int i = 0; i < connectedClients.Count; ++i)
         {
@@ -263,17 +325,23 @@ public class NET_P2PHost : MonoBehaviour
             }
         }
 
+        //If socket is valid, send message
         if (targetSocket != null)
         {
             targetSocket.Send(byteMsg);
-            Debug.LogError("Sending block message");
+            Debug.Log("Sending block message");
         }
         else
         {
-            Debug.LogError("targetSocket invalid");
+            Debug.LogWarning("targetSocket invalid");
         }
     }
 
+    /// <summary>
+    /// Send message to client at ID
+    /// </summary>
+    /// <param name="a_clientID"></param>
+    /// <param name="a_bcmessage"></param>
     public void SendNetMessage(int a_clientID, Blockchain a_bcmessage)
     {
         byte[] byteMsg = new byte[NET_Constants.packetSize];
@@ -296,10 +364,15 @@ public class NET_P2PHost : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// On a new thread, Read client's message if buffer is not empty
+    /// </summary>
     private void RecieveData()
     {
+        //Inialise byteArray
         byte[] byteArray = new byte[NET_Constants.packetSize];
 
+        //Loop while host is active
         while (tcpListenerActive)
         { 
             //loop through each 
@@ -320,21 +393,28 @@ public class NET_P2PHost : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles messages recieved from clients
+    /// </summary>
+    /// <param name="a_incomingMessage"></param>
     private void HandleData(byte[] a_incomingMessage)
     {
-        Debug.LogError("Client Sent a Message");
+        Debug.Log("Client Sent a Message");
 
         //Null check networkmananger
         if(!networkManager)
         {
             //find the component from scene before send to static method
-            Debug.LogError("Network Manager not found in scene, locating...");
+            Debug.LogWarning("Network Manager not found in scene, locating...");
             networkManager = FindObjectOfType<NET_NetworkManager>();
         }
 
         NET_HandleData.ReadData(a_incomingMessage, networkManager);
     }
 
+    /// <summary>
+    /// Closes the connection and stops TCPListener 
+    /// </summary>
     private void CloseNet()
     {
         tcpListener.Stop();

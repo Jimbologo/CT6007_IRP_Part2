@@ -3,27 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-
+/// <summary>
+/// Updates text elements for UI Block
+/// </summary>
 public class BlockUI : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI currentHashTextUI;
+    private TextMeshProUGUI currentHashTextUI = null;
 
     [SerializeField]
-    private TextMeshProUGUI previousHashTextUI;
+    private TextMeshProUGUI previousHashTextUI = null;
 
     [SerializeField]
-    private TextMeshProUGUI transactionCountTextUI;
+    private TextMeshProUGUI transactionCountTextUI = null;
 
     [SerializeField]
-    private TextMeshProUGUI blockSizeTextUI;
+    private TextMeshProUGUI blockSizeTextUI = null;
 
     [SerializeField]
-    private TextMeshProUGUI blockchainSizeTextUI;
+    private TextMeshProUGUI blockchainSizeTextUI = null;
 
-    //Update the Text UI elements with data
+    /// <summary>
+    /// Update the Text UI elements with data
+    /// </summary>
+    /// <param name="currentHash"></param>
+    /// <param name="previousHash"></param>
+    /// <param name="transactionCount"></param>
+    /// <param name="blockSizeInBytes"></param>
+    /// <param name="blockchainSizeInBytes"></param>
     public void SetupUI(string currentHash, string previousHash, int transactionCount, int blockSizeInBytes, int blockchainSizeInBytes)
     {
+        //Update String variables
         currentHashTextUI.text = "This Hash: " + currentHash;
         previousHashTextUI.text = "Prev Hash: " + previousHash;
         transactionCountTextUI.text = "NO. Transactions: " + transactionCount.ToString();

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Validates new block data ready to add to blockchain
+/// </summary>
 public class Miner : BlockchainManager
 {
-    //Use this to validate Is a block that has been added
-
     //Data from Messages from P2P will be sent into this class to manage mining of the blockchain
     //Such as if a new block is wanting to be added, the block data and a list of transactions that have taken place will be sent here
     //That block will be validated, once validated the blockchain will be updated and passed around
@@ -19,7 +20,11 @@ public class Miner : BlockchainManager
         networkManager = FindObjectOfType<NET_NetworkManager>();
     }
 
-    //Validates a new block
+    /// <summary>
+    /// Validates a new block
+    /// </summary>
+    /// <param name="a_transactionsToValidate"></param>
+    /// <param name="a_blockToValidate"></param>
     public void ValidateBlock(Transaction[] a_transactionsToValidate,Block a_blockToValidate)
     {
         //We need to calculate what the hash would be of the new transactions, based on this data stored
@@ -33,7 +38,7 @@ public class Miner : BlockchainManager
         //Check if the hashes are the same
         if (hashOfTransactions.SequenceEqual(a_blockToValidate.GetCurrentBlockHash()))
         {
-            Debug.LogError("[CORRECT]: Block is Valid, now adding to blockchain");
+            Debug.Log("[CORRECT]: Block is Valid, now adding to blockchain");
             blockchain.Add(a_blockToValidate);
 
             //SEND UPDATED BLOCKCHAIN TO ALL USERS AND MINERS
@@ -43,12 +48,15 @@ public class Miner : BlockchainManager
         }
         else
         {
-            Debug.LogError("[FAILURE]: Block is NOT Valid! Not updating Blockchain");
+            Debug.LogWarning("[FAILURE]: Block is NOT Valid! Not updating Blockchain");
         }
     }
 
 
-    //This would normally be a message sent from a user not this function
+    /// <summary>
+    /// Public point for network handling to call to validate a block
+    /// </summary>
+    /// <param name="a_blockToAdd"></param>
     public void AddToBlockchain(Block a_blockToAdd)
     {
         ValidateBlock(a_blockToAdd.GetTransactions(), a_blockToAdd);

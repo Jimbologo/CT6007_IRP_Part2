@@ -6,24 +6,29 @@ using System.Text;
 public class BlockchainDebugging : MonoBehaviour
 {
     [SerializeField]
-    private Transform contentHolder;
+    private Transform contentHolder = null;
 
     [SerializeField]
-    private GameObject blockUIPrefab;
+    private GameObject blockUIPrefab = null;
 
     private List<GameObject> blocksUIList = new List<GameObject>();
 
     private List<Block> blockchainData = new List<Block>();
     private bool needsUIUpdating = true;
 
-    //Update the UI representing blocks in the blockchain
+    /// <summary>
+    /// Update the UI representing blocks in the blockchain
+    /// </summary>
+    /// <param name="a_blockchainData"></param>
     public void UpdateBlockchainData(List<Block> a_blockchainData)
     {
         blockchainData = a_blockchainData;
         needsUIUpdating = true;
     }
 
-    
+    /// <summary>
+    /// Mian update loop of object in scene
+    /// </summary>
     private void Update()
     {
         //Due to UpdateBlockchainUI tracing back to a static method and we are wanting to create new object in scene
@@ -35,7 +40,9 @@ public class BlockchainDebugging : MonoBehaviour
         }
     }
 
-    //Update the UI representing blocks in the blockchain
+    /// <summary>
+    /// Update the UI representing blocks in the blockchain
+    /// </summary>
     public void UpdateBlockchainUI()
     {
         //destroy all current block to refresh list

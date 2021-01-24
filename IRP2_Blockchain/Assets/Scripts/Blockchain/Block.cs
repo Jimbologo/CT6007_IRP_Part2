@@ -7,6 +7,9 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/// <summary>
+/// Holds an array of all transactions with hashes for both last and this block
+/// </summary>
 [System.Serializable]
 public class Block
 {
@@ -16,7 +19,11 @@ public class Block
     private byte[] currentBlockHash;
 
 
-    //Constructor
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="a_previousBlockHash"></param>
+    /// <param name="a_transactions"></param>
     public Block(byte[] a_previousBlockHash, Transaction[] a_transactions)
     {
         transactions = a_transactions;
@@ -28,25 +35,36 @@ public class Block
         CalculateHash();
     }
 
-    //Getter
+    /// <summary>
+    /// Gets the previous blocks hash
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetPreviousBlockHash()
     {
         return previousBlockHash;
     }
 
-    //Getter
+    /// <summary>
+    /// Gets the current blocks hash
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetCurrentBlockHash()
     {
         return currentBlockHash;
     }
 
-    //Getter
+    /// <summary>
+    /// Gets this blocks array of transactions
+    /// </summary>
+    /// <returns></returns>
     public Transaction[] GetTransactions()
     {
         return transactions;
     }
 
-    //Calculate the transactions Hash
+    /// <summary>
+    /// Calculates this blocks Hash
+    /// </summary>
     public void CalculateHash()
     {
         HashAlgorithm algorithm = MD5.Create();
@@ -61,7 +79,10 @@ public class Block
         currentBlockHash = algorithm.ComputeHash(newByteList.ToArray());
     }
 
-    //Calculate the transactions Hash then return
+    /// <summary>
+    /// Calculate this blocks Hash and returns
+    /// </summary>
+    /// <returns></returns>
     public byte[] CalculateHashReturned()
     {
         HashAlgorithm algorithm = MD5.Create();
@@ -77,13 +98,18 @@ public class Block
         //Check hash is valid
         if (thisHash == null)
         {
-            Debug.LogError("Calculated Hash is null, This probably means the transactions hashed was empty/Null");
+            Debug.LogWarning("Calculated Hash is null, This probably means the transactions hashed was empty/Null");
         }
 
         return thisHash;
     }
 
-    //Calculate the transactions Hash then return
+    /// <summary>
+    /// Calculate this blocks Hash from a specified previous blocks hash and returns
+    /// </summary>
+    /// <param name="a_transactions"></param>
+    /// <param name="a_previousBlockHash"></param>
+    /// <returns></returns>
     public static byte[] CalculateHashReturned(Transaction[] a_transactions, byte[] a_previousBlockHash)
     {
         HashAlgorithm algorithm = MD5.Create();
@@ -99,7 +125,7 @@ public class Block
         //Check hash is valid
         if (thisHash == null)
         {
-            Debug.LogError("Calculated Hash is null, This probably means the transactions hashed was empty/Null");
+            Debug.LogWarning("Calculated Hash is null, This probably means the transactions hashed was empty/Null");
         }
 
         return thisHash;
@@ -107,21 +133,31 @@ public class Block
 
 
 
-    //Convert Transactions Array to Byte Hash
+    /// <summary>
+    /// Convert Transactions Array to Byte Hash
+    /// </summary>
+    /// <param name="a_newTransactions"></param>
+    /// <returns></returns>
     public static byte[] GetTransactionArrayHash(Transaction[] a_newTransactions)
     {
         HashAlgorithm algorithm = MD5.Create();
         List<byte> byteList = new List<byte>();
 
+        //Add bytes of all transaction into one array
         for (int i = 0; i < a_newTransactions.Length; ++i)
         {
             byte[] bytesOfTransaction = a_newTransactions[i].GetBytes();
             byteList.AddRange(bytesOfTransaction);
         }
 
+        //Computer the hash of these transactions
         return algorithm.ComputeHash(byteList.ToArray());
     }
 
+    /// <summary>
+    /// Converts Object into Bytes and returns
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetBytes()
     {
         //Calculate total size of the byte array
@@ -134,6 +170,11 @@ public class Block
         }
     }
 
+    /// <summary>
+    /// Takes bytes and convert back into Object
+    /// </summary>
+    /// <param name="a_bytes"></param>
+    /// <returns></returns>
     public static Block ConvertBytes(byte[] a_bytes)
     {
         //Calculate total size of the byte array

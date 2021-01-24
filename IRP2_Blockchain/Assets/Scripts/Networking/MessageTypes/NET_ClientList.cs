@@ -4,16 +4,27 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/// <summary>
+/// Holds List of client ID
+/// </summary>
 [System.Serializable]
 public class NET_ClientList 
 {
     public List<int> clients;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="a_clients"></param>
     public NET_ClientList(List<int> a_clients)
     {
         clients = a_clients;
     }
 
+    /// <summary>
+    /// Convert Object into Byte array and returns
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetBytes()
     {
         //Calculate total size of the byte array
@@ -26,6 +37,11 @@ public class NET_ClientList
         }
     }
 
+    /// <summary>
+    /// Convert byte array into Object and return
+    /// </summary>
+    /// <param name="a_bytes"></param>
+    /// <returns></returns>
     public static NET_ClientList ConvertBytes(byte[] a_bytes)
     {
         //Calculate total size of the byte array

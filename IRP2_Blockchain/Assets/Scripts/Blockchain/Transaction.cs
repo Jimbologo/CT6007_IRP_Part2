@@ -6,6 +6,9 @@ using System.Text;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/// <summary>
+/// Holds all action data as well as users involved in a transaction for a block 
+/// </summary>
 [System.Serializable]
 public class Transaction
 {
@@ -13,6 +16,12 @@ public class Transaction
     private int targetUserID = -1;
     private Action actionTaken;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="a_currentUserID"></param>
+    /// <param name="a_targetUserID"></param>
+    /// <param name="a_actionTaken"></param>
     public Transaction(int a_currentUserID, int a_targetUserID, Action a_actionTaken)
     {
         currentUserID = a_currentUserID;
@@ -20,40 +29,39 @@ public class Transaction
         actionTaken = a_actionTaken;
     }
 
+    /// <summary>
+    /// Gets current User ID
+    /// </summary>
+    /// <returns></returns>
     public int getCurrentUserID()
     {
         return currentUserID;
     }
 
+    /// <summary>
+    /// Gets Target User ID
+    /// </summary>
+    /// <returns></returns>
     public int getTargetUserID()
     {
         return targetUserID;
     }
 
+    /// <summary>
+    /// Gets the action that was taken
+    /// </summary>
+    /// <returns></returns>
     public Action getActionTaken()
     {
         return actionTaken;
     }
 
+    /// <summary>
+    /// Converts the objetc to bytes and returns
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetBytes()
     {
-        //Calculate total size of the byte array
-        //int stringBytesCount = ASCIIEncoding.Unicode.GetByteCount(actionTaken);
-        //int totalBytesCount = (sizeof(int) * 2) + stringBytesCount;
-
-        //byte[] combinedData = new byte[totalBytesCount];
-
-        //byte[] currentUserIDBytes = BitConverter.GetBytes(currentUserID);
-        //currentUserIDBytes.CopyTo(combinedData, 0);
-
-        //byte[] targetUserIDBytes = BitConverter.GetBytes(currentUserID);
-        //targetUserIDBytes.CopyTo(combinedData, 4);
-
-        //byte[] actionTakenBytes = Encoding.ASCII.GetBytes(actionTaken);
-        //targetUserIDBytes.CopyTo(combinedData, 8);
-
-        //return combinedData;
-
         BinaryFormatter bf = new BinaryFormatter();
         using (var ms = new MemoryStream())
         {

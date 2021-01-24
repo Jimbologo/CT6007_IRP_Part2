@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Handles player data and UI updates
+/// </summary>
 public class PlayerDataManager : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI playerText;
+    private TextMeshProUGUI playerText = null;
     [SerializeField]
-    private TextMeshProUGUI coinsText;
+    private TextMeshProUGUI coinsText = null;
     [SerializeField]
-    private TextMeshProUGUI healthText;
+    private TextMeshProUGUI healthText = null;
 
     private int iplayerID = -1;
     private int icoins = 0;
@@ -21,6 +24,9 @@ public class PlayerDataManager : MonoBehaviour
 
     private bool bupdateRequired = false;
 
+    /// <summary>
+    /// Main Update Loop
+    /// </summary>
     private void Update()
     {
         if(bupdateRequired)
@@ -29,12 +35,22 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates player ID Value
+    /// </summary>
+    /// <param name="a_iplayerID"></param>
     public void UpdateValues(int a_iplayerID)
     {
         iplayerID = a_iplayerID;
         bupdateRequired = true;
     }
 
+    /// <summary>
+    /// Updates player ID along with coins and health values
+    /// </summary>
+    /// <param name="a_iplayerID"></param>
+    /// <param name="a_icoins"></param>
+    /// <param name="a_ihealth"></param>
     public void UpdateValues(int a_iplayerID, int a_icoins, int a_ihealth)
     {
         iplayerID = a_iplayerID;
@@ -43,7 +59,9 @@ public class PlayerDataManager : MonoBehaviour
         bupdateRequired = true;
     }
 
-    //Update the text elements with the updated values
+    /// <summary>
+    /// Update the text elements with the updated values
+    /// </summary>
     private void UpdateText()
     {
         playerText.text = "Player: " + iplayerID;
@@ -53,7 +71,10 @@ public class PlayerDataManager : MonoBehaviour
         bupdateRequired = false;
     }
 
-    //We calculate our values from the blockchain
+    /// <summary>
+    /// We calculate our values from the blockchain
+    /// </summary>
+    /// <param name="a_blockchain"></param>
     public void CalculateBlockchain(List<Block> a_blockchain)
     {
         //We reset value to default
@@ -69,7 +90,6 @@ public class PlayerDataManager : MonoBehaviour
                 if (transactions[j] != null && transactions[j].getCurrentUserID() == iplayerID)
                 {
                     //If i performed the action
-                    Debug.LogError("I did something...");
 
                     //We now perform the action to update player data values
                     if(transactions[j].getActionTaken().actionType == ActionType.GiveCoins
@@ -81,7 +101,6 @@ public class PlayerDataManager : MonoBehaviour
                 else if(transactions[j] != null && transactions[j].getTargetUserID() == iplayerID)
                 {
                     //If i was the target of the action
-                    Debug.LogError("someone did something to me...");
 
                     if (transactions[j].getActionTaken().actionType == ActionType.GiveCoins
                        || transactions[j].getActionTaken().actionType == ActionType.TakeCoins)

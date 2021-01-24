@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/// <summary>
+/// Holds list of blocks ready for sending over network
+/// </summary>
 [System.Serializable]
 public class Blockchain
 {
@@ -14,6 +17,10 @@ public class Blockchain
         theBlockchain = a_theBlockchain;
     }
 
+    /// <summary>
+    /// Converts Object into Bytes and returns
+    /// </summary>
+    /// <returns></returns>
     public byte[] GetBytes()
     {
         //Calculate total size of the byte array
@@ -25,6 +32,11 @@ public class Blockchain
         }
     }
 
+    /// <summary>
+    /// Takes bytes and convert back into Object
+    /// </summary>
+    /// <param name="a_bytes"></param>
+    /// <returns></returns>
     public static Blockchain ConvertBytes(byte[] a_bytes)
     {
         //Calculate total size of the byte array
